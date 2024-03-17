@@ -3,13 +3,13 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const createBlog = createAsyncThunk(
     "blog/createBlog", async (data) => {
-        const access_token = JSON.stringify(localStorage.getItem("access_token"));
+        const access_token = JSON.parse(localStorage.getItem("access_token"));
+        console.log(access_token)
         const response = await axios.post(`${import.meta.env.VITE_API}/api/blog/create`, data, {
             headers : {
                 Authorization : `Bearer ${access_token}`
             }
         })
-        // const response = await axiosJWT.post(`${import.meta.env.VITE_API}/api/blog/create`, obj)
         return response.data;
     }
 )

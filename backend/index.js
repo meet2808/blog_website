@@ -10,10 +10,12 @@ const app = express();
 app.use(express.json());
 dotenv.config();
 connectDB();
-app.use(cookieParser());
-app.use(cors({ origin: "http://localhost:3000" , allowedHeaders:{
-    "Access-Control-Allow-Credentials": true
-}}));
+app.use(cookieParser(process.env.JWT));
+app.use(cors({
+    origin: "http://localhost:3000",
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials : true
+}));
 
 app.get('/', (req, res) => {
     res.send('API is running...');

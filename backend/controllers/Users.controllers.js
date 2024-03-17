@@ -41,12 +41,15 @@ export const loginUser = async (req, res, next) => {
         const isPasswordCorrect = await bcrypt.compare(req.body.password, user.password);
         if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid email id or password" });
 
-        const token = jwt.sign({ id: user._id, name: user.email }, process.env.JWT);
+        const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT);
         const options = {
-            httpOnly: true,
+            domain: 'http://localhost:3000',
+            httpOnly: false,
+            signed: true,
             secure: true,
+            sameSite: 'none',
         }
-        return res.cookie("accessToken", token).status(200).json({ details: { email: user.email, id: user._id, access_token: token } })
+        res.cookie("accessToken", token, options).status(200).json({ details: { email: user.email, id: user._id, access_token: token } })
     } catch (err) {
         next(err);
     }

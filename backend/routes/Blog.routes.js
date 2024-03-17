@@ -1,29 +1,22 @@
 import express from "express";
 import { body } from "express-validator";
-import { createBlog } from "../controllers/Blogs.controllers.js";
-import multer from "multer";
-import { verifyUser } from "../utils/authMiddleware.js";
+import { createBlog, getAllBlogs, getBlog, deleteBlog } from "../controllers/Blogs.controllers.js";
+import { verifyToken } from "../utils/auth.middleware.js";
+import { upload } from "../utils/multer.middleware.js";
 
 const router = express.Router();
 
-// Multer storage configuration
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'images/') // Specify the directory where uploaded files will be stored
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname) // Specify the filename for uploaded files
-    }
-});
-
-// Multer instance with configuration
-const upload = multer({ storage: storage });
-
-router.route("/create").post(verifyUser, [
+router.route("/create").post(verifyToken, [
     body("title", "Please enter the title"),
     body("category", "Please select the category"),
     body("content", "Please enter the content"),
     body("image", "Please upload the image")
-], /*upload.single('image'),*/ createBlog);
+], upload.single('image'), createBlog);
+
+router.route("/all").get(verifyToken, getAllBlogs)
+
+router.route("/:id").get(verifyToken, getBlog)
+
+router.route("/delete/:id").delete(verifyToken, deleteBlog)
 
 export default router;
