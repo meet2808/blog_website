@@ -14,19 +14,23 @@ import { upload } from "../utils/multer.middleware.js";
 
 const router = express.Router();
 
-router.route("/create").post(verifyToken, [
+router.route("/create").post(
+    verifyToken,
+    upload.single('image'), [
     body("title", "Please enter the title"),
     body("category", "Please select the category"),
     body("content", "Please enter the content"),
     body("image", "Please upload the image")
-], upload.single('image'), createBlog);
+], createBlog);
 
-router.route("/update/:id").patch(verifyToken, [
+router.route("/update/:id").patch(
+    verifyToken,
+ [
     body("title", "Please enter the title"),
     body("category", "Please select the category"),
     body("content", "Please enter the content"),
-    body("image", "Please upload the image")
-], upload.single('image'), updateBlog);
+    body("image", "Please enter the image url")
+], updateBlog);
 
 router.route("/all").get(verifyToken, getAllBlogs)
 

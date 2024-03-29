@@ -1,39 +1,34 @@
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getAllBlogs } from "../features/blogSlice";
 import { FeatureCard, CategorySection } from "../components";
 import img from "../assets/hero-image.jpg";
 
 const Home = () => {
+    const dispatch = useDispatch();
+    const blogsList = useSelector(state => state.blog.blogs);
+    useEffect(() => {
+        dispatch(getAllBlogs())
+    }, []);
+
     return (
         <div>
             <section>
-                <FeatureCard
-                    img={img}
-                    title={"Programming Blog"}
-                    blogTitle={"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur optio ipsum vitae aperiam!"}
-                    category={"technology"}
-                    id={2}
-                    author={"Meet Panchal"}
-                    publishDate={"April 23, 2020"}
-                />
+                {
+                    blogsList?.map((blog) => (
+                        <FeatureCard
+                            key={blog._id}
+                            img={blog.image}
+                            title={blog.title}
+                            blogTitle={blog.title}
+                            category={blog.category}
+                            id={blog._id}
+                            author={blog.author_id}
+                            publishDate={blog.writeDate}
+                        />
+                    ))
+                }
 
-                <FeatureCard
-                    img={img}
-                    title={"Programming Blog"}
-                    blogTitle={"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur optio ipsum vitae aperiam!"}
-                    category={"technology"}
-                    id={2}
-                    author={"John Doe"}
-                    publishDate={"August 22, 2018"}
-                />
-
-                <FeatureCard
-                    img={img}
-                    title={"Programming Blog"}
-                    blogTitle={"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur optio ipsum vitae aperiam!"}
-                    category={"technology"}
-                    id={2}
-                    author={"Bill Wills"}
-                    publishDate={"April 23, 2023"}
-                />
             </section>
             <CategorySection />
         </div>

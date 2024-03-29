@@ -1,18 +1,36 @@
-import { useParams, Outlet } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { FeatureCard } from "../components"
-import img from "../assets/hero-image.jpg"
+import { useSelector, useDispatch } from "react-redux";
+import { getBlogByCategory } from "../features/blogSlice";
 
 const Category = () => {
     let { slug } = useParams();
-    console.log(slug);
-
+    const dispatch = useDispatch();
+    const blogsList = useSelector(state => state.blog.blogs);
+    let blogs;
+    blogs = blogsList.filter(blog => blog.category === slug)
+    if (!blogs) {
+        dispatch(getBlogByCategory(slug))
+        blogs = useSelector(state => state.blog.categoryBlogList)
+    }
     return (
         <div>
             <p className="font-bold text-xl uppercase text-blue-700">{slug}</p>
             <section>
-            <FeatureCard img={img} title={"Programming Blog"} blogTitle={"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur optio ipsum vitae aperiam!"} category={"technology"} id={2} />
-
-            <FeatureCard img={img} title={"Programming Blog"} blogTitle={"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur optio ipsum vitae aperiam!"} category={"technology"} id={2} />
+                {
+                    blogs?.map((blog) => (
+                        <FeatureCard
+                            key={blog._id}
+                            img={blog.image}
+                            title={blog.title}
+                            blogTitle={blog.title}
+                            category={blog.category}
+                            id={blog._id}
+                            author={blog.author_id}
+                            publishDate={blog.writeDate}
+                        />
+                    ))
+                }
             </section>
         </div>
     )

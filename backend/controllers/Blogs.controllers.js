@@ -4,8 +4,9 @@ import { validationResult } from "express-validator";
 
 export const createBlog = async (req, res) => {
     const errors = validationResult(req);
+    console.log(req.body)
     try {
-        const fields = ["title", "category", "content"];
+        const fields = ["title", "category", "content", "image"];
         const emptyFields = fields.filter(field => !req.body[field]);
 
         if (emptyFields.length !== 0) return res.status(403).json({ error: "Please fill in all the required fields." });
@@ -20,7 +21,7 @@ export const createBlog = async (req, res) => {
             } else {
                 const date = new Date();
                 const fullDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
-                const blogData = { ...req.body, image: req.file.path, author_id: req.id }
+                const blogData = { ...req.body, author_id: req.id }
 
                 const savedBlog = await Blog.create(blogData);
                 res.status(200).json(savedBlog)
@@ -33,6 +34,7 @@ export const createBlog = async (req, res) => {
 }
 
 export const updateBlog = async (req, res) => {
+    console.log(req.params.id, req.body)
     const errors = validationResult(req);
     try {
         const fields = ["title", "category", "content"];

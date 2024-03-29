@@ -1,7 +1,6 @@
-import React, { useState, forwardRef, useImperativeHandle } from "react";
+import React, { useState, forwardRef, useImperativeHandle, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
-
 
 const RTE = ({ name, control, label, defaultValue = "", ...props }, ref) => {
     const [value, setValue] = useState("");
@@ -13,6 +12,10 @@ const RTE = ({ name, control, label, defaultValue = "", ...props }, ref) => {
     const handleChange = (content, delta, source, editor) => {
         setValue(content);
     };
+
+    useEffect(() => {
+        setValue(defaultValue)
+    }, [defaultValue !== ""])
 
     return (
         <div className="w-full">
@@ -26,8 +29,6 @@ const RTE = ({ name, control, label, defaultValue = "", ...props }, ref) => {
                 name={name}
                 value={value}
                 onChange={handleChange}
-                // value={value}
-                // onChange={setValue}
                 placeholder="Tell your story..."
                 ref={ref}
                 {...props}

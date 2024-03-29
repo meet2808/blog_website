@@ -3,7 +3,7 @@ import { PostForm } from "../components";
 const Addpost = () => {
     return(
         <>
-            <PostForm title={"Write Blog"} isEditable={false} />
+            <PostForm formtitle={"Write Blog"} isEditable={false} />
         </>
     )
 }

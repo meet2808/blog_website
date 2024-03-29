@@ -1,5 +1,4 @@
 import { useNavigate, Link } from "react-router-dom";
-import { BsPersonCircle } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../features/userslice";
 
@@ -29,7 +28,6 @@ const Header = () => {
                 {
                     isLoggedIn ? (
                         <>
-                            {/* <BsPersonCircle size={35} /> */}
                             <h2
                                 className="font-semibold hover:text-gray-600"
                                 onClick={() => handleLogout()}

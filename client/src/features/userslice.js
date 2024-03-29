@@ -4,7 +4,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 export const createUser = createAsyncThunk(
     "user/createUser", async (data) => {
         const response = await axios.post(`${import.meta.env.VITE_API}/api/users/create`, data);
-        
         return response.data;
     }
 );

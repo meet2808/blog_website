@@ -5,7 +5,6 @@ export const verifyToken = (req, res, next) => {
     if (!token) return res.status(401).json({ message: "No Authorized Request." })
 
     const tokenValue = req.headers.authorization?.replace("Bearer ", "")
-
     const verifiedToken = jwt.verify(tokenValue, process.env.JWT);
     if (verifiedToken) {
         req.id = verifiedToken.id;
